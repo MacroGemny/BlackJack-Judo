@@ -1,3 +1,36 @@
+/*
+ Full name: Jesse Dubon
+ * Date: November 19, 2023
+ * Project: BlackJack-Judo pt1
+ * 
+ * 
+ * INSTRUCTIONS
+Hey there! So, you're making a cool game called "BlackJack Judo" 
+ * which is a mix of Blackjack and Rock-Paper-Scissors. Here's how it works in a way that's easy to understand:
+
+Start the Game: You first enter your name and then you'll be playing against some computer-controlled players (AI).
+
+Playing Blackjack: The main part of the game is like regular Blackjack. You try to get cards that add up to 21 
+ * or as close as possible without going over. You're playing against these AI players.
+
+Losing a Round: If you lose a round of Blackjack, you're not out yet! You get a chance to stay in the game by 
+ * playing Rock-Paper-Scissors.
+
+Rock-Paper-Scissors Comeback: If you lose in Blackjack, you play Rock-Paper-Scissors against the AI. 
+ * If you win this, you're back in the Blackjack game!
+
+Winning a Round: If you win in Blackjack, you 'knock out' an AI player from the table. This means you've beaten 
+ * them and they're out of the game.
+
+Losing Rock-Paper-Scissors: If you lose in the Rock-Paper-Scissors round after losing in Blackjack, then you're 
+ * totally out of the game.
+
+So, the game is a fun combination of card skills and luck with the Rock-Paper-Scissors twist. Every time you lose at 
+ * cards, you get a shot to come back by winning at Rock-Paper-Scissors. Sounds like a unique and exciting game!
+
+ */
+
+
 #include <iostream>
 #include <ctime>
 #include <algorithm>
