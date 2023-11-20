@@ -1,0 +1,63 @@
+BLACKJACK JUDO! Writeup
+
+INSTRUCTIONS
+Hey there! So, you're making a cool game called "BlackJack Judo" which is a mix of Blackjack and Rock-Paper-Scissors. Here's how it works in a way that's easy to understand:
+
+Start the Game: You first enter your name and then you'll be playing against some computer-controlled players (AI).
+
+Playing Blackjack: The main part of the game is like regular Blackjack. You try to get cards that add up to 21 or as close as possible without going over. You're playing against these AI players.
+
+Losing a Round: If you lose a round of Blackjack, you're not out yet! You get a chance to stay in the game by playing Rock-Paper-Scissors.
+
+Rock-Paper-Scissors Comeback: If you lose in Blackjack, you play Rock-Paper-Scissors against the AI. If you win this, you're back in the Blackjack game!
+
+Winning a Round: If you win in Blackjack, you 'knock out' an AI player from the table. This means you've beaten them and they're out of the game.
+
+Losing Rock-Paper-Scissors: If you lose in the Rock-Paper-Scissors round after losing in Blackjack, then you're totally out of the game.
+
+So, the game is a fun combination of card skills and luck with the Rock-Paper-Scissors twist. Every time you lose at cards, you get a shot to come back by winning at Rock-Paper-Scissors. Sounds like a unique and exciting game!
+
+
+
+Overview of Game Components
+Structures and Objects:
+
+The game uses structures (struct), like AIOpponent, to represent complex data. These structures hold information about AI opponents, such as their names, dialogues, and difficulty levels. Objects of these structures are created and used to manage different AI players in the game.
+Functions:
+
+Functions like getCardValue, playBlackjackWithAI, and playRPS encapsulate specific tasks. For example, getCardValue returns a random card value, playBlackjackWithAI handles the Blackjack game logic against an AI opponent, and playRPS manages the Rock-Paper-Scissors game.
+Control Flow:
+
+Conditional statements (if, else) and loops (while, for) control the game's flow. They determine the game's logic, such as decision-making in Blackjack and RPS, and iterating through lists of results.
+Random Number Generation:
+
+The rand() function generates random numbers used for card values, AI decisions, and selecting dialogues, creating unpredictability in the game.
+Input and Output:
+
+cin and cout are used for input and output operations. cin captures the player’s decisions and inputs, while cout displays information, results, and dialogues to the player.
+Data Storage:
+
+Arrays and lists store data like AI dialogues and game results. An array (array<string, 20>) stores predefined dialogues for AI characters, and a list (list<string>) keeps track of game outcomes.
+String Manipulation:
+
+The game manipulates strings to include the player's name in dialogues. Functions like formatDialogue replace placeholders in strings with actual data (player's name) for personalized interaction.
+The Game Flow
+Initialization:
+
+The game starts with initializing necessary variables and setting up the random number generator (srand(time(0))).
+Main Game Loop:
+
+The main function contains the primary game loop, where the player chooses an AI opponent and plays Blackjack against them. If the player loses, they have a chance to get back into the game by winning a round of RPS.
+Blackjack Logic:
+
+The playBlackjackWithAI function handles the core logic of the Blackjack game, including dealing cards, calculating totals, and determining wins or losses.
+RPS Logic:
+
+If the player loses in Blackjack, the playRPS function offers a chance to return to the game by winning a round of RPS against a randomly generated choice.
+Results and Replay:
+
+After each round, the results are stored, and the player is asked if they want to play again. The game continues until the player chooses not to replay.
+Displaying Results:
+
+At the end of the game, the results of all rounds are displayed, summarizing the player's performance.
+In summary, the game leverages C++'s capabilities in object-oriented programming, control flow management, random number generation, and user interaction to create an engaging and interactive gaming experience. The structure and logic of the game are encapsulated in functions and structures, making the code modular and manageable.
