@@ -1,0 +1,57 @@
+((Update Project 2))
+### Project Write-Up: Implementing an UNO Game with Advanced Programming Concepts
+
+#### Introduction
+This project involves creating a simplified version of the popular card game UNO using C++. The implementation demonstrates the use of advanced programming concepts such as recursion, recursive sorting algorithms, hashing, trees, and graphs. These concepts are integrated to handle various aspects of the game, from managing the deck and player hands to determining the gameplay logic.
+
+#### Game Overview
+UNO is a card game typically played with a standard deck containing cards of four different colors, each numbered from 1 to 9, along with special action and wild cards. For the purposes of this project, we use a simplified deck with four colors (Red, Blue, White, Green) and numbers from 1 to 4.
+
+#### Key Concepts
+
+1. **Recursion**: 
+   - Implemented in game mechanics, such as checking winning conditions.
+   - Used in special game actions, like implementing recursive effects of action cards.
+
+2. **Recursive Sorts**: 
+   - Utilized for sorting cards in players' hands, enhancing the strategic aspect of the game.
+   - Implemented using algorithms like Quick Sort or Merge Sort.
+
+3. **Hashing**:
+   - Hashing is employed for efficient deck creation and management.
+   - Ensures quick access and unique representation of cards.
+
+4. **Trees**:
+   - Decision trees represent potential moves and outcomes, aiding in AI decision-making for automated opponents.
+   - Trees are also used to model game states and player strategies.
+
+5. **Graphs**:
+   - Graphs map out the relationships between different cards, player moves, and possible game outcomes.
+   - Useful in analyzing the game’s state and predicting future moves.
+
+#### Implementation Details
+
+1. **Deck Creation and Management**:
+   - The deck is created using a hash set to ensure all cards are unique.
+   - Cards are represented as objects with properties for color and number.
+
+2. **Gameplay Mechanics**:
+   - Players take turns playing cards that match the top card of the discard pile in color or number.
+   - Special rules and actions are incorporated as per standard UNO gameplay.
+
+3. **Player Hands and Sorting**:
+   - Each player’s hand is dynamically managed, with cards being added and removed as the game progresses.
+   - Hands are sorted using a recursive sorting algorithm for better playability.
+
+4. **Game Progression and Winning Condition**:
+   - The game progresses in turns with each player choosing to play or draw cards.
+   - The game ends when a player has no cards left, thereby winning the game.
+
+5. **Advanced AI (Optional)**:
+   - For a more challenging experience, an AI opponent can be implemented using decision trees and graph-based analysis for strategic gameplay.
+
+#### Challenges and Learning Outcomes
+Developing this UNO game provides practical experience in applying advanced programming concepts in a real-world application. It challenges the developer to think critically about data structures and algorithms, particularly in the context of game logic and AI. Additionally, it offers valuable insights into problem-solving and optimization techniques.
+
+#### Conclusion
+This project not only demonstrates the practical application of advanced programming concepts but also offers an engaging and interactive way to understand these concepts. It is an excellent example of how complex algorithms and data structures can be utilized in creating enjoyable and functional applications.
