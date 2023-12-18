@@ -144,7 +144,57 @@ public:
         // Announce winner
     }
 };
+class BlackjackRPSGame {
+public:
+    void startGame() {
+        string playerName = displayMainMenu();
+        displayDealerMessage(playerName);
 
+        list<string> results;
+        char retryChoice;
+        do {
+            cout << "Select your opponent:\n1. Theo the Almighty\n2. Johnny Judo\n3. Theara - Lady of Cards\nEnter choice: ";
+            int opponentChoice;
+            cin >> opponentChoice;
+
+            AIOpponent currentOpponent;
+            switch (opponentChoice) {
+                case 1: currentOpponent = theo; break;
+                case 2: currentOpponent = johnny; break;
+                case 3: currentOpponent = theara; break;
+                default: cout << "Invalid choice, defaulting to Theo." << endl; currentOpponent = theo; break;
+            }
+
+            cout << "You are playing against " << currentOpponent.name << endl;
+
+            bool blackjackWin = playBlackjackWithAI(currentOpponent);
+            if (blackjackWin) {
+                results.push_back("Win (Blackjack)");
+            } else {
+                results.push_back("Loss (Blackjack)");
+                cout << "\nYou lost in Blackjack! Time for a redemption round." << endl;
+                if (playRPS()) {
+                    results.push_back("Win (RPS)");
+                    cout << "Congratulations! You're back in the game. Restarting Blackjack..." << endl;
+                    playBlackjackWithAI(currentOpponent);
+                } else {
+                    results.push_back("Loss (RPS)");
+                    cout << "You lost in Rock-Paper-Scissors!" << endl;
+                }
+            }
+
+            cout << "Would you like to try again? (y/n): ";
+            cin >> retryChoice;
+
+        } while (retryChoice == 'y' || retryChoice == 'Y');
+
+        cout << "\nGame Over! Here are your results, " << playerName << ":\n";
+        for (list<string>::const_iterator it = results.begin(); it != results.end(); ++it) {
+            cout << *it << endl; 
+        }
+    }
+
+private:
 // Function to get a random card value between 1 and 11
 int getCardValue() {
     int card = rand() % 11 + 1;  // card value 1 (Ace) to 11
@@ -152,7 +202,7 @@ int getCardValue() {
 }
 
 // Function to play Rock, Paper, Scissors
-// Function to play Rock, Paper, Scissors
+
 bool playRPS() {
     cout << "\nPlay Rock, Paper, Scissors to get back in the game!" << endl;
     cout << "Enter your choice (rock/r, paper/p, scissors/s): ";
@@ -339,64 +389,46 @@ bool playBlackjackWithAI(AIOpponent& ai) {
         return false;
     }
 }
+};
+
+
 
 int main() {
-    UnoGame game(4); // Example with 4 players
-    game.startGame();
-    cout << " ______ _            _      ___            _        ___           _       \n"
-                 "| ___ \\ |          | |    |_  |          | |      |_  |         | |      \n"
-                 "| |_/ / | __ _  ___| | __   | | __ _  ___| | __     | |_   _  __| | ___  \n"
-                 "| ___ \\ |/ _` |/ __| |/ /   | |/ _` |/ __| |/ /     | | | | |/ _` |/ _ \\ \n"
-                 "| |_/ / | (_| | (__|   </\\__/ / (_| | (__|   <  /\\__/ / |_| | (_| | (_) |\n"
-                 "\\____/|_|\\__,_|\\___|_|\\_\\____/ \\__,_|\\___|_|\\_\\ \\____/ \\__,_|\\__,_|\\___/ \n"
-                 "                                                                         \n"
-                 "                                                                         \n";
-    srand(time(0));
-    
-    string playerName = displayMainMenu();
-    displayDealerMessage(playerName); 
+std::cout << " dP\"\"b8    db    8b    d8 888888     88  88 88   88 88\"\"Yb \n";
+    std::cout << "dP   `\"   dPYb   88b  d88 88__       88  88 88   88 88__dP \n";
+    std::cout << "Yb  \"88  dP__Yb  88YbdP88 88\"\"       888888 Y8   8P 88\"\"Yb \n";
+    std::cout << " YboodP dP\"\"\"\"Yb 88 YY 88 888888     88  88 `YbodP' 88oodP " << endl << endl;
 
-    list<string> results;
-    char retryChoice;
-    do {
-        cout << "Select your opponent:\n1. Theo the Almighty\n2. Johnny Judo\n3. Theara - Lady of Cards\nEnter choice: ";
-        int opponentChoice;
-        cin >> opponentChoice;
+    srand(time(0));  // Seed for random number generation
 
-        AIOpponent currentOpponent;
-        switch (opponentChoice) {
-            case 1: currentOpponent = theo; break;
-            case 2: currentOpponent = johnny; break;
-            case 3: currentOpponent = theara; break;
-            default: cout << "Invalid choice, defaulting to Theo." << endl; currentOpponent = theo; break;
+    int choice;
+    cout << "Welcome to the Game Hub\n";
+    cout << "1. Play Blackjack and Rock-Paper-Scissors\n";
+    cout << "2. Play Uno\n";
+    cout << "3. Exit\n";
+    cout << "Enter your choice: ";
+    cin >> choice;
+
+    switch (choice) {
+        case 1: {
+            BlackjackRPSGame blackjackRPSGame;
+            blackjackRPSGame.startGame();
+            break;
         }
-
-        cout << "You are playing against " << currentOpponent.name << endl;
-
-        bool blackjackWin = playBlackjackWithAI(currentOpponent);
-        if (blackjackWin) {
-            results.push_back("Win (Blackjack)");
-        } else {
-            results.push_back("Loss (Blackjack)");
-            cout << "\nYou lost in Blackjack! Time for a redemption round." << endl;
-            if (playRPS()) {
-                results.push_back("Win (RPS)");
-                cout << "Congratulations! You're back in the game. Restarting Blackjack..." << endl;
-                playBlackjackWithAI(currentOpponent);
-            } else {
-                results.push_back("Loss (RPS)");
-                cout << "You lost in Rock-Paper-Scissors!" << endl;
-            }
+        case 2: {
+            int numOfPlayers;
+            cout << "Enter number of players for Uno: ";
+            cin >> numOfPlayers;
+            UnoGame unoGame(numOfPlayers);
+            unoGame.startGame();
+            break;
         }
-
-        cout << "Would you like to try again? (y/n): ";
-        cin >> retryChoice;
-
-    } while (retryChoice == 'y' || retryChoice == 'Y');
-
-    cout << "\nGame Over! Here are your results, " << playerName << ":\n";
-    for (list<string>::const_iterator it = results.begin(); it != results.end(); ++it) {
-    cout << *it << endl; 
+        case 3:
+            cout << "Exiting game hub. Thank you for playing!\n";
+            return 0;
+        default:
+            cout << "Invalid choice. Please try again.\n";
+            break;
     }
 
     return 0;
