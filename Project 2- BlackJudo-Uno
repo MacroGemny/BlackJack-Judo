@@ -1,0 +1,403 @@
+/*
+ Full name: Jesse Dubon
+ * Date: December 15, 2023
+ * Project: BlackJack-Judo y Uno pt2
+ * 
+ * 
+ * INSTRUCTIONS
+Hey there! So, you're making a cool game called "BlackJack Judo" 
+ * which is a mix of Blackjack and Rock-Paper-Scissors. Here's how it works in a way that's easy to understand:
+
+Start the Game: You first enter your name and then you'll be playing against some computer-controlled players (AI).
+
+Playing Blackjack: The main part of the game is like regular Blackjack. You try to get cards that add up to 21 
+ * or as close as possible without going over. You're playing against these AI players.
+
+Losing a Round: If you lose a round of Blackjack, you're not out yet! You get a chance to stay in the game by 
+ * playing Rock-Paper-Scissors.
+
+Rock-Paper-Scissors Comeback: If you lose in Blackjack, you play Rock-Paper-Scissors against the AI. 
+ * If you win this, you're back in the Blackjack game!
+
+Winning a Round: If you win in Blackjack, you 'knock out' an AI player from the table. This means you've beaten 
+ * them and they're out of the game.
+
+Losing Rock-Paper-Scissors: If you lose in the Rock-Paper-Scissors round after losing in Blackjack, then you're 
+ * totally out of the game.
+
+So, the game is a fun combination of card skills and luck with the Rock-Paper-Scissors twist. Every time you lose at 
+ * cards, you get a shot to come back by winning at Rock-Paper-Scissors. Sounds like a unique and exciting game!
+
+ */
+
+
+#include <iostream>
+#include <ctime>
+#include <algorithm>
+#include <list>
+#include <array>
+#include <unordered_set>
+#include <vector>
+
+using namespace std;
+class Card {
+public:
+    string color;
+    int number;
+
+    Card(string c, int n) : color(c), number(n) {}
+
+    // ...
+
+    // Define the equality comparison operator
+    bool operator==(const Card& other) const {
+        return color == other.color && number == other.number;
+    }
+};
+
+
+class UnoGame {
+private:
+    vector<Card> deck;
+    vector<vector<Card> > playerHands;
+    vector<Card> discardPile;
+bool canPlayCard(const Card& cardToPlay) {
+    if (discardPile.empty()) {
+        // If the discard pile is empty, any card can be played
+        return true;
+    }
+
+    const Card& topCard = discardPile.back(); // Get the top card of the discard pile
+
+    // Check if the card to play matches the color or number of the top card
+    return cardToPlay.color == topCard.color || cardToPlay.number == topCard.number;
+}
+    void createDeck() {
+        vector<string> colors;
+        colors.push_back("Red");
+        colors.push_back("Blue");
+        colors.push_back("White");
+        colors.push_back("Green");
+
+        for (size_t i = 0; i < colors.size(); ++i) {
+            for (int number = 1; number <= 4; ++number) {
+                deck.push_back(Card(colors[i], number));
+            }
+        }
+    }
+
+    void shuffleDeck() {
+        random_shuffle(deck.begin(), deck.end());
+    }
+
+    void dealInitialCards() {
+        int cardsPerPlayer = deck.size() / playerHands.size();
+        for (size_t i = 0; i < playerHands.size(); ++i) {
+            for (int j = 0; j < cardsPerPlayer; ++j) {
+                playerHands[i].push_back(deck.back());
+                deck.pop_back();
+            }
+        }
+    }
+
+    void playTurn(int playerIndex) {
+        vector<Card>& hand = playerHands[playerIndex];
+        for (size_t i = 0; i < hand.size(); ++i) {
+            if (canPlayCard(hand[i])) {
+                discardPile.push_back(hand[i]);
+                hand.erase(hand.begin() + i);
+                break;
+            }
+        }
+    }
+
+    void sortPlayerHand(int playerIndex) {
+        // Implement sorting logic here
+    }
+
+    bool isGameOver() {
+        for (size_t i = 0; i < playerHands.size(); ++i) {
+            if (playerHands[i].empty()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+public:
+    UnoGame(int numOfPlayers) : playerHands(numOfPlayers) {
+        createDeck();
+        shuffleDeck();
+        dealInitialCards();
+    }
+
+    void startGame() {
+        while (!isGameOver()) {
+            for (int i = 0; i < static_cast<int>(playerHands.size()); ++i) {
+                playTurn(i);
+                sortPlayerHand(i);
+                if (isGameOver()) break;
+            }
+        }
+
+        cout << "Game Over" << endl;
+        // Announce winner
+    }
+};
+
+// Function to get a random card value between 1 and 11
+int getCardValue() {
+    int card = rand() % 11 + 1;  // card value 1 (Ace) to 11
+    return card;
+}
+
+// Function to play Rock, Paper, Scissors
+// Function to play Rock, Paper, Scissors
+bool playRPS() {
+    cout << "\nPlay Rock, Paper, Scissors to get back in the game!" << endl;
+    cout << "Enter your choice (rock/r, paper/p, scissors/s): ";
+
+    char playerChoice;
+    cin >> playerChoice;
+
+    // Generating computer's choice
+    int computerChoice = rand() % 3; // 0 for rock, 1 for paper, 2 for scissors
+    char choices[] = {'r', 'p', 's'};
+    string choiceNames[] = {"Rock", "Paper", "Scissors"};
+
+    cout << "You chose " << (playerChoice == 'r' ? "Rock" : playerChoice == 'p' ? "Paper" : "Scissors") << endl;
+    cout << "Computer chose " << choiceNames[computerChoice] << endl;
+
+    // Determining the winner
+    if (playerChoice == choices[computerChoice]) {
+        cout << "It's a draw! Try again." << endl;
+        return playRPS(); // Draw, play again
+    } else if ((playerChoice == 'r' && computerChoice == 2) || 
+               (playerChoice == 'p' && computerChoice == 0) || 
+               (playerChoice == 's' && computerChoice == 1)) {
+        cout << "You win!" << endl;
+        return true; // Player wins
+    } else {
+        cout << "You lose!" << endl;
+        return false; // Player loses
+    }
+}
+
+
+// Main Menu: Displays title and prompts for player's name
+string displayMainMenu() {
+    cout << "Welcome to Judo Blackjack" << endl;
+    cout << "Please enter your name: ";
+    string playerName;
+    cin >> playerName;
+    return playerName;
+}
+
+// Function to format dialogue with player's name
+string formatDialogue(const string& dialogue, const string& playerName) {
+    string formattedDialogue = dialogue;
+    size_t pos = formattedDialogue.find("{playerName}");
+
+    if (pos != string::npos) {
+        formattedDialogue.replace(pos, string("{playerName}").length(), playerName);
+    }
+
+    return formattedDialogue;
+}
+
+// Display Random Dealer Message
+void displayDealerMessage(const string& playerName) {
+    array<string, 49> dealerMessages = {
+        "Well, {playerName}, let's see if luck favors you today."
+        "Are you ready to test your skills, {playerName}?"
+        "{playerName}, I have a feeling you might win big today."
+        "Ah, {playerName}, always a pleasure to have you at the table."
+        "Let's see if you can outsmart me today, {playerName}."
+        "{playerName}, remember, it's not just about the cards you're dealt."
+        "I hope you're feeling lucky today, {playerName}."
+        "Be careful, {playerName}, I'm not as easy to beat as I look."
+        "Looks like you're in it to win it, {playerName}."
+        "May the odds be ever in your favor, {playerName}."
+        "A bold move there, {playerName}. Let's see if it pays off."
+        "You're quite the contender, {playerName}."
+        "{playerName}, your poker face is quite something. But will it help you win?"
+        "You've got an interesting strategy, {playerName}. Let's see where it leads."
+        "Each game is a new adventure, isn't it, {playerName}?"
+        "You're giving me a run for my money, {playerName}!"
+        "Ah, playing it safe, {playerName}? Or are you just biding your time?"
+        "I've seen many players, but you, {playerName}, are truly unique."
+        "Today could be your lucky day, {playerName}. Or perhaps not."
+        "I can sense a high roller when I see one, {playerName}."
+        "{playerName}, you're full of surprises, and I like that."
+        "Your confidence is admirable, {playerName}. But will it last?"
+        "Watch closely, {playerName}. The game is about to get interesting."
+        "You're keeping me on my toes, {playerName}. Well done!"
+        "Remember, {playerName}, in Blackjack, everything can change in an instant."
+        "Playing against you is always a highlight of my day, {playerName}."
+        "You're not going easy on me, {playerName}. Good!"
+        "Looks like you've got a trick up your sleeve, {playerName}."
+        "Keep your eyes on the prize, {playerName}."
+        "The cards never lie, but they do surprise, right, {playerName}?"
+        "{playerName}, you're a worthy opponent. Let's see how this round goes."
+        "Let the cards fall where they may, {playerName}."
+        "Your focus is impressive, {playerName}. But will it be enough?"
+        "Every card tells a story, {playerName}. What's yours?"
+        "The game's not over yet, {playerName}. Stay sharp."
+        "You're quite the enigma, {playerName}. I can't predict your next move."
+        "Let's raise the stakes a bit, shall we, {playerName}?"
+        "A wise decision, {playerName}, or perhaps a risky one?"
+        "You're not backing down, {playerName}. I like that."
+        "I can tell you've done this before, {playerName}."
+        "Fascinating choice, {playerName}. Let's see where it leads."
+        "Your determination is clear, {playerName}. But will it be enough?"
+        "You've got a keen eye, {playerName}. Use it wisely."
+        "Brace yourself, {playerName}. The game is about to heat up."
+        "I'm curious to see your next move, {playerName}."
+        "You've got a good hand there, {playerName}. Or do you?"
+        "The suspense is killing me, {playerName}!"
+        "You're playing a dangerous game, {playerName}. But isn't that the fun part?"
+        "Your calm demeanor is intriguing, {playerName}."
+        "This is turning out to be quite the game, {playerName}!"
+    };
+
+     int randomIndex = rand() % dealerMessages.size();
+    cout << formatDialogue(dealerMessages[randomIndex], playerName) << endl;
+}
+
+// AI Opponent Structure
+struct AIOpponent {
+    string name;
+    array<string, 2> dialogues;
+    int difficultyLevel; // Determines the AI's skill level
+};
+
+// AI Decision Function
+bool aiDecision(AIOpponent& ai, int handTotal) {
+    if (handTotal < 17) {
+        cout << ai.name << " decides to hit." << endl;
+        return true; // AI chooses to hit
+    } else {
+        cout << ai.name << " decides to stay." << endl;
+        return false; // AI chooses to stay
+    }
+}
+
+// AI Dialogue Function
+void aiDialogue(AIOpponent& ai, int handTotal) {
+    if (handTotal < 12 && ai.difficultyLevel >= 2) {
+        cout << ai.name << ": " << ai.dialogues[1] << endl;
+    } else {
+        cout << ai.name << ": " << ai.dialogues[0] << endl;
+    }
+}
+
+// AI Opponents
+AIOpponent theo = {"Theo the Almighty", {"This hand could be better...", "I'm not sure I can win with this."}, 3};
+AIOpponent johnny = {"Johnny Judo", {"Looks like I'm in trouble!", "Don't count me out just yet!"}, 2};
+AIOpponent theara = {"Theara - Lady of Cards", {"Oh dear, not looking good...", "I might just have to bluff my way through."}, 1};
+
+// Function to play Blackjack with an AI opponent
+bool playBlackjackWithAI(AIOpponent& ai) {
+    int playerTotal = 0, aiTotal = 0;
+    playerTotal += getCardValue() + getCardValue();
+    aiTotal += getCardValue() + getCardValue();
+    
+    // Display a random dialogue from AI
+        int dialogueIndex = rand() % ai.dialogues.size();
+        cout << ai.dialogues[dialogueIndex] << endl;  // Display AI's dialogue
+
+    cout << "Your initial total: " << playerTotal << endl;
+    cout << ai.name << "'s initial total is hidden." << endl;
+
+    // Player's turn
+    char choice;
+    do {
+        cout << "Your total is " << playerTotal << ". Hit (h) or Stay (s)? ";
+        cin >> choice;
+        if (choice == 'h') {
+            playerTotal += getCardValue();
+            cout << "You drew a card. Your new total: " << playerTotal << endl;
+        }
+    } while (choice != 's' && playerTotal < 21);
+
+    // AI's turn
+    while (aiTotal < 17) {
+        aiTotal += getCardValue();
+        aiDialogue(ai, aiTotal);
+    }
+
+    cout << ai.name << "'s total: " << aiTotal << endl;
+
+    if (playerTotal > 21) {
+        cout << "You busted. " << ai.name << " wins!" << endl;
+        return false;
+    } else if (aiTotal > 21 || playerTotal > aiTotal) {
+        cout << "You win!" << endl;
+        return true;
+    } else {
+        cout << ai.name << " wins!" << endl;
+        return false;
+    }
+}
+
+int main() {
+    UnoGame game(4); // Example with 4 players
+    game.startGame();
+    cout << " ______ _            _      ___            _        ___           _       \n"
+                 "| ___ \\ |          | |    |_  |          | |      |_  |         | |      \n"
+                 "| |_/ / | __ _  ___| | __   | | __ _  ___| | __     | |_   _  __| | ___  \n"
+                 "| ___ \\ |/ _` |/ __| |/ /   | |/ _` |/ __| |/ /     | | | | |/ _` |/ _ \\ \n"
+                 "| |_/ / | (_| | (__|   </\\__/ / (_| | (__|   <  /\\__/ / |_| | (_| | (_) |\n"
+                 "\\____/|_|\\__,_|\\___|_|\\_\\____/ \\__,_|\\___|_|\\_\\ \\____/ \\__,_|\\__,_|\\___/ \n"
+                 "                                                                         \n"
+                 "                                                                         \n";
+    srand(time(0));
+    
+    string playerName = displayMainMenu();
+    displayDealerMessage(playerName); 
+
+    list<string> results;
+    char retryChoice;
+    do {
+        cout << "Select your opponent:\n1. Theo the Almighty\n2. Johnny Judo\n3. Theara - Lady of Cards\nEnter choice: ";
+        int opponentChoice;
+        cin >> opponentChoice;
+
+        AIOpponent currentOpponent;
+        switch (opponentChoice) {
+            case 1: currentOpponent = theo; break;
+            case 2: currentOpponent = johnny; break;
+            case 3: currentOpponent = theara; break;
+            default: cout << "Invalid choice, defaulting to Theo." << endl; currentOpponent = theo; break;
+        }
+
+        cout << "You are playing against " << currentOpponent.name << endl;
+
+        bool blackjackWin = playBlackjackWithAI(currentOpponent);
+        if (blackjackWin) {
+            results.push_back("Win (Blackjack)");
+        } else {
+            results.push_back("Loss (Blackjack)");
+            cout << "\nYou lost in Blackjack! Time for a redemption round." << endl;
+            if (playRPS()) {
+                results.push_back("Win (RPS)");
+                cout << "Congratulations! You're back in the game. Restarting Blackjack..." << endl;
+                playBlackjackWithAI(currentOpponent);
+            } else {
+                results.push_back("Loss (RPS)");
+                cout << "You lost in Rock-Paper-Scissors!" << endl;
+            }
+        }
+
+        cout << "Would you like to try again? (y/n): ";
+        cin >> retryChoice;
+
+    } while (retryChoice == 'y' || retryChoice == 'Y');
+
+    cout << "\nGame Over! Here are your results, " << playerName << ":\n";
+    for (list<string>::const_iterator it = results.begin(); it != results.end(); ++it) {
+    cout << *it << endl; 
+    }
+
+    return 0;
+}
